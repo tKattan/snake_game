@@ -1,6 +1,6 @@
 import sys, pygame
 
-#13 lignes de 13 car on entoure par une couche set a 3 exprimant la bordure
+#13 lignes de 13 car on entoure par une couche set a -1 exprimant la bordure
         #0 : vide
         #1: snake body
         #2: head
@@ -36,8 +36,31 @@ class Matrix:
             for j in range(self.ligne):
                 self.matrix[i][j]=new_matrix[i][j]
 
-    def setByPosMatrix(self,y,x,valeur):
+    def setByPosMatrix(self,x,y,valeur):
         self.matrix[y][x]= valeur
 
-matrix=Matrix()
-matrix.printMatrix()
+class Snake:
+    #Initialisation de l'Objet snake, on insere sa taille au debut, la position de sa tete (position qui sera mettre dans une matrice donc ce n'est pas en pixel
+    # mais en emplacement)
+    def __init__(self,size_init=3, posHead = [5,5]):
+        self.size = size_init
+        self.posTail = []
+        self.posHead = posHead
+        print(self.posHead[0])
+        for i in range(1,size_init+1):
+            if posHead[0]-i < 0:
+                print("Snake init failed, cause : not enough space for the tail\n(Snake init -> Tail is on the left of the head)")
+                sys.exit("System Exit")
+            else:
+                self.posTail.append([posHead[0]-i,posHead[1]])
+
+    def setHead(self,new_pos):
+        self.posHead = new_pos
+    def setTail(self,new_pos):
+        self.posTail = new_pos
+
+    def getHead(self):
+        return self.posHead
+    def getTail(self):
+        return self.posTail
+
