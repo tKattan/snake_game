@@ -39,6 +39,13 @@ class Matrix:
     def setByPosMatrix(self,x,y,valeur):
         self.matrix[y][x]= valeur
 
+    def getNumberOfLigne():
+        return self.colonne
+        
+    def getNumberOfColumns():
+        return self.ligne
+
+
 class Snake:
     #Initialisation de l'Objet snake, on insere sa taille au debut, la position de sa tete (position qui sera mettre dans une matrice donc ce n'est pas en pixel
     # mais en emplacement)
