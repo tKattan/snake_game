@@ -1,6 +1,12 @@
 import sys, pygame
 pygame.init()
 
+#STUB :
+def snake_movement():
+    pass
+def movement_effect():
+    pass
+
 #Affichage de la fenêtre avec une dimension de 440 * 440 donc 40 pixels par case.
 size = width, height = 440, 440
 black = 0,0,0 # -> Noir = 0
@@ -35,9 +41,13 @@ pygame.display.set_caption('Snake Game')
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+    #STUB
+    snake_movement()
+    movement_effect()
+    #code
     reset_screen_in_black()
-    for casex in range (10):
-        for casey in range (10):
+    for casex in range (11):
+        for casey in range (11):
             if Coloration_Tab[casex][casey]==0:
                 color_case(casex,casey,black)
             if Coloration_Tab[casex][casey]==1:
