@@ -55,10 +55,10 @@ class Matrix:
     def setByPosMatrix(self,x,y,valeur):
         self.matrix[y][x]= valeur
 
-    def getNumberOfLigne():
+    def getNumberOfLigne(self):
         return self.ligne
 
-    def getNumberOfColumns():
+    def getNumberOfColumns(self):
         return self.colonne
 
 
