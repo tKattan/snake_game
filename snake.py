@@ -1,4 +1,4 @@
-import sys, pygame
+import sys, pygame, snake_func
 pygame.init()
 
 #STUB :
@@ -8,16 +8,15 @@ def movement_effect():
     pass
 
 #Affichage de la fenêtre avec une dimension de 440 * 440 donc 40 pixels par case.
-size = width, height = 440, 440
+size = width, height = 880, 880
 black = 0,0,0 # -> Noir = 0
-red = 255,0,0 # -> Rouge = 1
-green = 0,128,0 # -> Vert = 2
-brown = 117,88,71 # -> Marron = 3
+brown = 117,88,71 # -> Marron = 1
+red = 255,0,0 # -> Rouge = 2
+green = 0,128,0 # -> Vert = 3
 
-#Coloration_Tab :
-#Rangés dans l'ordre
-#[[colone1],[colone2]...]
-Coloration_Tab = [ [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] , [ 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 ] ]
+#color matrix and screen
+color_matrix = snake_func.Matrix(13,13)
+
 screen = pygame.display.set_mode(size)
 
 #Fonction pour reset l'écran en noir si besoin
@@ -27,16 +26,16 @@ def reset_screen_in_black():
 
 #Déf de fonction coloré une case
 def color_case_xy(x,y,color): #x,y sont les coordonnés directement, pas le numéro de la case.
-    case=pygame.Surface((40, 40))
+    case=pygame.Surface((80, 80))
     case.fill((color))
     screen.blit(case, (x, y))
 
+#Pour changer la couleur d'une case, changez les de x=1 à 11 et y=1 à 11, ne pas toucher 0 et 12 avec color_matrix.setByPosMatrix
 def color_case(case_in_x,case_in_y,color): #case de 0 à 10 (11 cases) pour x et y
-    color_case_xy(case_in_x*40,case_in_y*40,color)
+    color_case_xy(case_in_x*80,case_in_y*80,color)
 
 #Définition du titre de l'app
 pygame.display.set_caption('Snake Game')
-
 #Fermeture de l'app
 while 1:
     for event in pygame.event.get():
@@ -44,16 +43,18 @@ while 1:
     #STUB
     snake_movement()
     movement_effect()
-    #code
+    #code d'affichage
     reset_screen_in_black()
-    for casex in range (11):
-        for casey in range (11):
-            if Coloration_Tab[casex][casey]==0:
-                color_case(casex,casey,black)
-            if Coloration_Tab[casex][casey]==1:
-                color_case(casex,casey,red)
-            if Coloration_Tab[casex][casey]==2:
-                color_case(casex,casey,green)  
-            if Coloration_Tab[casex][casey]==3:
-                color_case(casex,casey,brown)  
+    for x in range (1,color_matrix.getNumberOfLigne()-1):
+        for y in range (1,color_matrix.getNumberOfColumns()-1):
+            if color_matrix.getMatrix()[x][y]==-1:
+                color_case(x-1,y-1,red)
+            if color_matrix.getMatrix()[x][y]==0:
+                color_case(x-1,y-1,black)
+            if color_matrix.getMatrix()[x][y]==1:
+                color_case(x-1,y-1,brown)  
+            if color_matrix.getMatrix()[x][y]==2:
+                color_case(x-1,y-1,red)
+            if color_matrix.getMatrix()[x][y]==3:
+                color_case(x-1,y-1,green)  
 
