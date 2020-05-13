@@ -55,10 +55,10 @@ class Matrix:
     def setByPosMatrix(self,x,y,valeur):
         self.matrix[y][x]= valeur
 
-    def getNumberOfLigne():
+    def getNumberOfLigne(self):
         return self.ligne
 
-    def getNumberOfColumns():
+    def getNumberOfColumns(self):
         return self.colonne
 
 
@@ -78,25 +78,33 @@ class Snake:
                 self.posTail.append([posHead[0]-i,posHead[1]])
 
 
-    def updateSnake(self,direction=RIGHT,speed=1): #Les constantes de direction sont définies en haut du fichier
+    def updateSnake(self,direction=RIGHT,appleEat=False): #Les constantes de direction sont définies en haut du fichier
         last_head = self.getHead()
         last_tail = self.getTail()
         new_tail = []
         if direction == LEFT:
-            self.setHead([last_head[0]-speed,last_head[1]])
+            self.setHead([last_head[0]-1,last_head[1]])
         elif direction == RIGHT:
-            self.setHead([last_head[0]+speed,last_head[1]])
+            self.setHead([last_head[0]+1,last_head[1]])
         elif direction == UP:
-            self.setHead([last_head[0],last_head[1]-speed])
+            self.setHead([last_head[0],last_head[1]-1])
         elif direction == DOWN:
-            self.setHead([last_head[0],last_head[1]+speed])
+            self.setHead([last_head[0],last_head[1]+1])
 
-        #la premiere partie de Tail va a la pos de l'ancienne position de head,
-        new_tail.append([last_head[0],last_head[1]])    
         
-        # les autres morceaux de tail vont la place du morceau avant lui exeple : morceau 1 va a la place du morceau 0
-        for i in range(self.size-1):
-            new_tail.append(last_tail[i])
+        
+        if appleEat==False:
+            #la premiere partie de Tail va a la pos de l'ancienne position de head,
+            new_tail.append([last_head[0],last_head[1]])
+            # les autres morceaux de tail vont la place du morceau avant lui exeple : morceau 1 va a la place du morceau 0
+            for i in range(self.size-1):
+                new_tail.append(last_tail[i])
+        else:
+            #la premiere partie de Tail va a la pos de l'ancienne position de head,
+            new_tail.append([last_head[0],last_head[1]])
+            # les autres morceaux de tail restent au memes endroits
+            for i in range(self.size):
+                new_tail.append(last_tail[i])
 
         self.setTail(new_tail)
 
@@ -109,5 +117,7 @@ class Snake:
         return self.posHead
     def getTail(self):
         return self.posTail
+
+
 
 
