@@ -1,5 +1,10 @@
-import sys, pygame, snake_func
+import sys, pygame, snake_func, apple
 pygame.init()
+
+RIGHT= 0
+DOWN= 1
+LEFT= 2
+UP= 3
 
 #STUB :
 def snake_movement():
@@ -16,8 +21,12 @@ green = 0,128,0 # -> Vert = 3
 
 #color matrix and screen
 color_matrix = snake_func.Matrix(13,13)
-
 screen = pygame.display.set_mode(size)
+
+#apple exemple
+#!!!!! à modifier avec la vrai direction et vrai pos de la tête
+apple=apple.Apple(3,RIGHT,(8,8),13,13)
+apple.setNewApple(color_matrix,3)
 
 #Fonction pour reset l'écran en noir si besoin
 def reset_screen_in_black():
@@ -56,5 +65,5 @@ while 1:
             if color_matrix.getMatrix()[x][y]==2:
                 color_case(x-1,y-1,red)
             if color_matrix.getMatrix()[x][y]==3:
-                color_case(x-1,y-1,green)  
+                color_case(x-1,y-1,green)
 
