@@ -82,17 +82,9 @@ class Snake:
         last_head = self.getHead()
         last_tail = self.getTail()
         new_tail = []
-        if direction == LEFT:
-            self.setHead([last_head[0]-1,last_head[1]])
-        elif direction == RIGHT:
-            self.setHead([last_head[0]+1,last_head[1]])
-        elif direction == UP:
-            self.setHead([last_head[0],last_head[1]-1])
-        elif direction == DOWN:
-            self.setHead([last_head[0],last_head[1]+1])
+        
+        self.setHead(self.futureUpdateHead(direction))
 
-        
-        
         if appleEat==False:
             #la premiere partie de Tail va a la pos de l'ancienne position de head,
             new_tail.append([last_head[0],last_head[1]])
@@ -129,7 +121,3 @@ class Snake:
         return self.posHead
     def getTail(self):
         return self.posTail
-
-
-
-
