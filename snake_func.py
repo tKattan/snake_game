@@ -107,6 +107,18 @@ class Snake:
                 new_tail.append(last_tail[i])
 
         self.setTail(new_tail)
+    
+    def futureUpdateHead(self, direction=RIGHT,speed=1):
+        last_head = self.getHead()
+        if direction == LEFT:
+            last_head = [last_head[0]-speed,last_head[1]]
+        elif direction == RIGHT:
+            last_head = [last_head[0]+speed,last_head[1]]
+        elif direction == UP:
+            last_head = [last_head[0],last_head[1]-speed]
+        elif direction == DOWN:
+            last_head = [last_head[0],last_head[1]+speed]
+        return last_head
 
     def setHead(self,new_pos):
         self.posHead = new_pos
