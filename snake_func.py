@@ -47,6 +47,14 @@ class Matrix:
                 else:
                     self.matrix[i][j]=0
 
+    #def checkSnakeInBorder(self,snake,direction=RIGHT):
+        """
+        Faire une fonction a part dans le fichier main pour éviter les appels do'bjets dans d'autre objet
+        Surtout pour faire un check (il suffira alors juste de check la future tête et le mettre dans une vaiable 'head' et ses coordonnée et appeler
+        la matrix.getMatrix()[head[0]][head[1]])
+        
+        """
+
     def setMatrix(self,new_matrix):
         for i in range(self.ligne):
             for j in range(self.colonne):
@@ -111,6 +119,12 @@ class Snake:
         elif direction == DOWN:
             last_head = [last_head[0],last_head[1]+speed]
         return last_head
+
+    def checkHeadInBody(self,direction=RIGHT):
+        head = self.futureUpdateHead(direction)
+        if head in self.posTail:
+            return True
+        return False
 
     def setHead(self,new_pos):
         self.posHead = new_pos
