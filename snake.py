@@ -1,10 +1,10 @@
-import sys, pygame, snake_func, apple
+import sys, pygame, snake_func
 pygame.init()
 
-RIGHT= 0
-DOWN= 1
-LEFT= 2
-UP= 3
+RIGHT = 0
+DOWN = 1
+LEFT = 2
+UP = 3
 
 #STUB :
 def snake_movement():
@@ -23,10 +23,12 @@ green = 0,128,0 # -> Vert = 3
 color_matrix = snake_func.Matrix(13,13)
 screen = pygame.display.set_mode(size)
 
-#apple exemple
-#!!!!! à modifier avec la vrai direction et vrai pos de la tête
-apple=apple.Apple(3,RIGHT,(8,8),13,13)
-apple.setNewApple(color_matrix,3)
+#snake
+snake = snake_func.Snake(3, [5, 5])
+
+# apple
+apple = snake_func.Apple(color_matrix)
+apple.setNewApple(snake.size)
 
 #Fonction pour reset l'écran en noir si besoin
 def reset_screen_in_black():
@@ -34,10 +36,10 @@ def reset_screen_in_black():
     screen.fill(black)
 
 #Déf de fonction coloré une case
-def color_case_xy(x,y,color): #x,y sont les coordonnés directement, pas le numéro de la case.
+def color_case_xy(cord_x,cord_y,color): #x,y sont les coordonnés directement, pas le numéro de la case.
     case=pygame.Surface((80, 80))
     case.fill((color))
-    screen.blit(case, (x, y))
+    screen.blit(case, (cord_x, cord_y))
 
 #Pour changer la couleur d'une case, changez les de x=1 à 11 et y=1 à 11, ne pas toucher 0 et 12 avec color_matrix.setByPosMatrix
 def color_case(case_in_x,case_in_y,color): #case de 0 à 10 (11 cases) pour x et y

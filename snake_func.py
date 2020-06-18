@@ -1,5 +1,4 @@
-import sys, pygame
-
+import sys, random
 
 #11 lignes de 11 car on entoure par une couche set a -1 exprimant la bordure
         #0 : vide
@@ -14,19 +13,22 @@ LEFT= 2
 UP= 3
 
 class Matrix:
-    def __init__(self,x=11,y=11):  
-         #Crée en fonction du nombre de ligne et de colonne que l'on veut une matrice
-         #             #initialisée a 11 de base mais peut être modulable : y = nb_ligne x = nb_colonne 
-        self.ligne= y
-        self.colonne= x
+    def __init__(self, nb_lines = 11, nb_columns = 11):  
+        # Crée en fonction du nombre de ligne et de colonne que l'on veut une matrice
+        # initialisée a 11 de base mais peut être modulable : y = nb_ligne x = nb_colonne 
+        self.ligne = nb_lines
+        self.colonne = nb_columns
         self.matrix= []
-        for i in range(y):
+
+        for i in range(nb_lines):
             self.matrix.append([])
-            for j in range(x):
-                if i == 0 or i == y-1 or j == 0 or j == x-1 :
+            for j in range(nb_columns):
+                if i == 0 or i == nb_lines-1 or j == 0 or j == nb_columns-1 :
                     self.matrix[i].append(-1)
                 else:
                     self.matrix[i].append(0)
+        
+        self.playableLandsize = (self.ligne - 2) * (self.colonne - 2)
 
     def getMatrix(self):
         return self.matrix
@@ -55,17 +57,23 @@ class Matrix:
     def setByPosMatrix(self,x,y,valeur):
         self.matrix[y][x]= valeur
 
+    def getByPosMatrix(self,x,y):
+        return self.matrix[y][x]
+
     def getNumberOfLigne(self):
         return self.ligne
 
     def getNumberOfColumns(self):
         return self.colonne
 
+    def getPlayableCells(self):
+        return self.playableLandsize
+
 
 class Snake:
     #Initialisation de l'Objet snake, on insere sa taille au debut, la position de sa tete (position qui sera mettre dans une matrice donc ce n'est pas en pixel
     # mais en case)
-    def __init__(self,size_init=3, posHead = [5,5]):
+    def __init__(self, size_init, posHead):
         self.size = size_init
         self.posTail = []
         self.posHead = posHead
@@ -78,7 +86,7 @@ class Snake:
                 self.posTail.append([posHead[0]-i,posHead[1]])
 
 
-    def updateSnake(self,direction=RIGHT,speed=1): #Les constantes de direction sont définies en haut du fichier
+    def updateSnake(self, direction = RIGHT, speed = 1): #Les constantes de direction sont définies en haut du fichier
         last_head = self.getHead()
         last_tail = self.getTail()
         new_tail = []
@@ -111,3 +119,31 @@ class Snake:
         return self.posTail
 
 
+class Apple:
+    # x et y sont la taille du terrain, bordure comprise (donc pour terrain jouable 11x11 -> 13x13)
+    # attention de respecter une taille minimum de taille exploitable de 1 (ce qui est logique aussi pour le serpent)
+    def __init__(self, color_matrix):  
+        self.color_matrix = color_matrix
+        
+
+    def setNewApple(self, snake_size):
+        i = 0
+
+        applepos = random.randint(0, self.color_matrix.getPlayableCells() - snake_size) #genere une pomme aléatoirement sur le terrain
+
+        for x in range(1, self.color_matrix.getNumberOfColumns()):
+            for y in range(1, self.color_matrix.getNumberOfLigne()):
+                if self.color_matrix.getByPosMatrix(x, y) == 0:
+                    i = i + 1
+                if i == applepos:
+                    self.color_matrix.setByPosMatrix(x, y, 3)
+
+# la taille du serpent doit être actualisé après l'appel de cette fonction
+# elle génère directement une nouvelle pomme.
+    def isAppleEated(self, futureHeadPos, snake_size):
+        if self.color_matrix.getByPosMatrix(futureHeadPos[0], futureHeadPos[1]) == 3:
+            self.setNewApple(snake_size)
+            return True
+        else:
+            return False
+        
