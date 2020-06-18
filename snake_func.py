@@ -49,6 +49,14 @@ class Matrix:
                 else:
                     self.matrix[i][j]=0
 
+    #def checkSnakeInBorder(self,snake,direction=RIGHT):
+        """
+        Faire une fonction a part dans le fichier main pour éviter les appels do'bjets dans d'autre objet
+        Surtout pour faire un check (il suffira alors juste de check la future tête et le mettre dans une vaiable 'head' et ses coordonnée et appeler
+        la matrix.getMatrix()[head[0]][head[1]])
+        
+        """
+
     def setMatrix(self,new_matrix):
         for i in range(self.ligne):
             for j in range(self.colonne):
@@ -86,27 +94,46 @@ class Snake:
                 self.posTail.append([posHead[0]-i,posHead[1]])
 
 
-    def updateSnake(self, direction = RIGHT, speed = 1): #Les constantes de direction sont définies en haut du fichier
+    def updateSnake(self,direction=RIGHT,appleEat=False): #Les constantes de direction sont définies en haut du fichier
+
         last_head = self.getHead()
         last_tail = self.getTail()
         new_tail = []
-        if direction == LEFT:
-            self.setHead([last_head[0]-speed,last_head[1]])
-        elif direction == RIGHT:
-            self.setHead([last_head[0]+speed,last_head[1]])
-        elif direction == UP:
-            self.setHead([last_head[0],last_head[1]-speed])
-        elif direction == DOWN:
-            self.setHead([last_head[0],last_head[1]+speed])
-
-        #la premiere partie de Tail va a la pos de l'ancienne position de head,
-        new_tail.append([last_head[0],last_head[1]])    
         
-        # les autres morceaux de tail vont la place du morceau avant lui exeple : morceau 1 va a la place du morceau 0
-        for i in range(self.size-1):
-            new_tail.append(last_tail[i])
+        self.setHead(self.futureUpdateHead(direction))
+
+        if appleEat==False:
+            #la premiere partie de Tail va a la pos de l'ancienne position de head,
+            new_tail.append([last_head[0],last_head[1]])
+            # les autres morceaux de tail vont la place du morceau avant lui exeple : morceau 1 va a la place du morceau 0
+            for i in range(self.size-1):
+                new_tail.append(last_tail[i])
+        else:
+            #la premiere partie de Tail va a la pos de l'ancienne position de head,
+            new_tail.append([last_head[0],last_head[1]])
+            # les autres morceaux de tail restent au memes endroits
+            for i in range(self.size):
+                new_tail.append(last_tail[i])
 
         self.setTail(new_tail)
+    
+    def futureUpdateHead(self, direction=RIGHT,speed=1):
+        last_head = self.getHead()
+        if direction == LEFT:
+            last_head = [last_head[0]-speed,last_head[1]]
+        elif direction == RIGHT:
+            last_head = [last_head[0]+speed,last_head[1]]
+        elif direction == UP:
+            last_head = [last_head[0],last_head[1]-speed]
+        elif direction == DOWN:
+            last_head = [last_head[0],last_head[1]+speed]
+        return last_head
+
+    def checkHeadInBody(self,direction=RIGHT):
+        head = self.futureUpdateHead(direction)
+        if head in self.posTail:
+            return True
+        return False
 
     def setHead(self,new_pos):
         self.posHead = new_pos
@@ -116,6 +143,7 @@ class Snake:
     def getHead(self):
         return self.posHead
     def getTail(self):
+
         return self.posTail
 
 
@@ -146,4 +174,4 @@ class Apple:
             return True
         else:
             return False
-        
+
