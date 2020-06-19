@@ -51,8 +51,11 @@ class Matrix:
 
     #def checkSnakeInBorder(self,snake,direction=RIGHT):
         """
-        Faire une fonction a part dans le fichier main pour éviter les appels do'bjets dans d'autre objet
-        Surtout pour faire un check (il suffira alors juste de check la future tête et le mettre dans une vaiable 'head' et ses coordonnée et appeler
+        Faire une fonction a part dans le fichier main pour éviter les 
+        appels do'bjets dans d'autre objet
+        Surtout pour faire un check (il suffira alors juste de check 
+        la future tête et le mettre dans une vaiable 'head' et 
+        ses coordonnée et appeler
         la matrix.getMatrix()[head[0]][head[1]])
         
         """
@@ -64,6 +67,9 @@ class Matrix:
 
     def setByPosMatrix(self,x,y,valeur):
         self.matrix[y][x]= valeur
+
+    def setByTuplePosMatrix(self,pos ,valeur):
+        self.matrix[pos[0]][pos[1]]= valeur
 
     def getByPosMatrix(self,x,y):
         return self.matrix[y][x]
@@ -152,8 +158,7 @@ class Apple:
     # attention de respecter une taille minimum de taille exploitable de 1 (ce qui est logique aussi pour le serpent)
     def __init__(self, color_matrix):  
         self.color_matrix = color_matrix
-        
-
+        self.pos = None
     def setNewApple(self, snake_size):
         i = 0
 
@@ -165,6 +170,7 @@ class Apple:
                     i = i + 1
                 if i == applepos:
                     self.color_matrix.setByPosMatrix(x, y, 3)
+                    self.pos = (x,y)
 
 # la taille du serpent doit être actualisé après l'appel de cette fonction
 # elle génère directement une nouvelle pomme.
@@ -175,3 +181,8 @@ class Apple:
         else:
             return False
 
+    def getPos(self):
+        if self.pos == None:
+            print("Apple getpos() error : the Apple isn't initialize")
+            sys.exit("System exit.")
+        return self.pos

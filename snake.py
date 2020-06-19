@@ -7,10 +7,22 @@ LEFT = 2
 UP = 3
 
 #STUB :
-def snake_movement():
-    pass
-def movement_effect():
-    pass
+def snake_movement(direction=RIGHT):
+    if snake.checkHeadInBody():
+        return False
+    new_pos = snake.futureUpdateHead(direction)
+    if color_matrix.getByPosMatrix(new_pos[0],new_pos[1]) == -1:
+        return False
+    return True
+
+
+def movement_effect(direction=RIGHT):
+    sTail = snake.getTail()
+    for i in sTail:
+        color_matrix.setByTuplePosMatrix(i,1)
+    color_matrix.setByTuplePosMatrix(snake.posHead(),2)
+    """if apple.pos != None:
+        color_matrix.setByTuplePosMatrix(apple.getPos(),3)""" #useless cause of the object Apple print itself in Matrix
 
 #Affichage de la fenêtre avec une dimension de 440 * 440 donc 40 pixels par case.
 size = width, height = 880, 880
@@ -62,6 +74,8 @@ def color_case(case_in_x,case_in_y,color): #case de 0 à 10 (11 cases) pour x et
 
 #Définition du titre de l'app
 pygame.display.set_caption('Snake Game')
+
+
 #Fermeture de l'app
 while 1:
     #in menu
@@ -93,7 +107,7 @@ while 1:
         if event.type == pygame.QUIT:
             sys.exit()
     #STUB
-    snake_movement()
+    snake_movement(snake)
     movement_effect()
     #Apple eated
     #futureheadpos is not coded on my part so i set this in comment.  *****
