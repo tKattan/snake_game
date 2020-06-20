@@ -9,23 +9,22 @@ LEFT = 2
 UP = 3
 
 #STUB :
-def snake_movement(direction=RIGHT):
+def snake_movement(direction):
     if snake.checkHeadInBody():
         return False
     new_pos = snake.futureUpdateHead(direction)
-    if color_matrix.getByPosMatrix(new_pos[0],new_pos[1]) == -1:
+    if color_matrix.getByPosMatrix(new_pos[0], new_pos[1]) == -1:
         return False
     return True
 
-
-def movement_effect(direction=RIGHT):
+def movement_effect(direction, isAppleEated):
+    snake.updateSnake(direction, isAppleEated)
     sTail = snake.getTail()
     for i in sTail:
-        color_matrix.setByTuplePosMatrix(i,1)
-    color_matrix.setByTuplePosMatrix(snake.posHead(), 2)
-    #useless cause of the object Apple print itself in Matrix
-    #if apple.pos != None:
-    #    color_matrix.setByTuplePosMatrix(apple.getPos(),3)
+        color_matrix.setByTuplePosMatrix(i, 1)
+    color_matrix.setByTuplePosMatrix(snake.posHead, 2)
+    if isAppleEated:
+        apple.setNewApple(snake.size)
 
 #Affichage de la fenêtre avec une dimension de 440 * 440 donc 40 pixels par case.
 size = width, height = 880, 880
@@ -74,7 +73,7 @@ def color_case_xy(cord_x, cord_y, color):
 
 # Pour changer la couleur d'une case, changez les de x=1 à 11 et y=1 à 11, ne pas
 # toucher 0 et 12 avec color_matrix.setByPosMatrix
-def color_case(case_in_x,case_in_y,color): #case de 0 à 10 (11 cases) pour x et y
+def color_case(case_in_x, case_in_y, color): #case de 0 à 10 (11 cases) pour x et y
     color_case_xy(case_in_x*80,case_in_y*80,color)
 
 #Définition du titre de l'app
@@ -89,12 +88,11 @@ while 1:
         screen.blit(press_enter, (300,400))
         screen.blit(score, (0,0))
         score_len = len(str(player_score))
-        print(score_len)
         for draw_score in range (1,score_len+1):
             last_number = player_score%10
             screen.blit(numberdraw[last_number],(200+35*(score_len-draw_score),0))
             player_score = player_score//10
-        
+
     while in_restart_menu == True:
         pygame.display.flip()
         for event in pygame.event.get():
@@ -102,8 +100,8 @@ while 1:
                 if event.key == pygame.K_KP_ENTER: 
                     player_score = 0
                     color_matrix.clearMatrix()
-                    #there is no function to reset the snake here.   *****
-                    #apple.setNewApple(snake.size)
+                    snake.resetSnake(3, [5, 5])
+                    apple.setNewApple(snake.size)
                     in_restart_menu=False
             if event.type == pygame.QUIT: 
                 sys.exit()
@@ -112,23 +110,29 @@ while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        elif event.type == pygame.K_UP:
-            directionOfMovement = UP
-        elif event.type == pygame.K_DOWN:
-            directionOfMovement = DOWN
-        elif event.type == pygame.K_LEFT:
-            directionOfMovement = LEFT
-        elif event.type == pygame.K_RIGHT:
-            directionOfMovement = RIGHT
-
-
-    #STUB
-    snake_movement(snake)
-    movement_effect()
-    #Apple eated
-    #futureheadpos is not coded on my part so i set this in comment.  *****
-    #if apple.isAppleEated(futureHeadPos, snake_size):                *****
-    #    player_score = player_score + 1                              *****
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                print('UP')
+                directionOfMovement = UP
+            elif event.key == pygame.K_DOWN:
+                print('DOWN')
+                directionOfMovement = DOWN
+            elif event.key == pygame.K_LEFT:
+                print('LEFT')
+                directionOfMovement = LEFT
+            elif event.key == pygame.K_RIGHT:
+                print('RIGHT')
+                directionOfMovement = RIGHT
+        
+ 
+    if snake_movement(directionOfMovement):
+        if apple.isAppleEated(snake.futureUpdateHead(), snake.size):
+            player_score = player_score + 1
+            movement_effect(directionOfMovement, True)
+        else:
+            movement_effect(directionOfMovement, False)
+    else:
+        in_restart_menu = True
 
     #code d'affichage
     reset_screen_in_black()
@@ -144,6 +148,5 @@ while 1:
                 color_case(x-1,y-1,red)
             if color_matrix.getMatrix()[x][y]==3:
                 color_case(x-1,y-1,green)
-    #if gameloose, you just have to put in_restart_menu=true         *****
-    #again, its in us5 so we have to add it later.                   *****
     
+    pygame.time.wait(500)

@@ -44,10 +44,10 @@ class Matrix:
     def clearMatrix(self):
         for i in range(self.ligne):
             for j in range(self.colonne):
-                if i == 0 or i == self.ligne-1 or j == 0 or j == self.colonne-1 :
-                    self.matrix[i][j]=-1
+                if i == 0 or i == self.ligne-1 or j == 0 or j == self.colonne-1:
+                    self.matrix[i][j] = -1
                 else:
-                    self.matrix[i][j]=0
+                    self.matrix[i][j] = 0
 
     #def checkSnakeInBorder(self,snake,direction=RIGHT):
         #Faire une fonction a part dans le fichier main pour éviter les 
@@ -84,11 +84,16 @@ class Matrix:
 class Snake:
     #Initialisation de l'Objet snake, on insere sa taille au debut, la position de sa tete (position qui sera mettre dans une matrice donc ce n'est pas en pixel
     # mais en case)
-    def __init__(self, size_init, posHead):
+    def __init__(self,size_init, posHead):
         self.size = size_init
         self.posTail = []
         self.posHead = posHead
-        print(self.posHead[0])
+        self.resetSnake(size_init, posHead)
+
+    def resetSnake(self, size_init, posHead):
+        self.size = size_init
+        self.posTail = []
+        self.posHead = posHead
         for i in range(1, size_init+1):
             if posHead[0]-i < 0:
                 print("Snake init failed, cause : not enough space for the tail\n(Snake init -> Tail is on the left of the head)")
@@ -117,6 +122,7 @@ class Snake:
             # les autres morceaux de tail restent au memes endroits
             for i in range(self.size):
                 new_tail.append(last_tail[i])
+            self.size = self.size + 1
 
         self.setTail(new_tail)
 
