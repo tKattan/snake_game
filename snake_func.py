@@ -50,15 +50,12 @@ class Matrix:
                     self.matrix[i][j]=0
 
     #def checkSnakeInBorder(self,snake,direction=RIGHT):
-        """
-        Faire une fonction a part dans le fichier main pour éviter les 
-        appels do'bjets dans d'autre objet
-        Surtout pour faire un check (il suffira alors juste de check 
-        la future tête et le mettre dans une vaiable 'head' et 
-        ses coordonnée et appeler
-        la matrix.getMatrix()[head[0]][head[1]])
-        
-        """
+        #Faire une fonction a part dans le fichier main pour éviter les 
+        #appels do'bjets dans d'autre objet
+        #Surtout pour faire un check (il suffira alors juste de check 
+        #la future tête et le mettre dans une vaiable 'head' et 
+        #ses coordonnée et appeler
+        #la matrix.getMatrix()[head[0]][head[1]])
 
     def setMatrix(self,new_matrix):
         for i in range(self.ligne):
@@ -92,15 +89,15 @@ class Snake:
         self.posTail = []
         self.posHead = posHead
         print(self.posHead[0])
-        for i in range(1,size_init+1):
+        for i in range(1, size_init+1):
             if posHead[0]-i < 0:
                 print("Snake init failed, cause : not enough space for the tail\n(Snake init -> Tail is on the left of the head)")
                 sys.exit("System Exit")
             else:
-                self.posTail.append([posHead[0]-i,posHead[1]])
+                self.posTail.append([posHead[0]-i, posHead[1]])
 
 
-    def updateSnake(self,direction=RIGHT,appleEat=False): #Les constantes de direction sont définies en haut du fichier
+    def updateSnake(self, direction=RIGHT, appleEat=False): #Les constantes de direction sont définies en haut du fichier
 
         last_head = self.getHead()
         last_tail = self.getTail()
@@ -108,7 +105,7 @@ class Snake:
         
         self.setHead(self.futureUpdateHead(direction))
 
-        if appleEat==False:
+        if appleEat == False:
             #la premiere partie de Tail va a la pos de l'ancienne position de head,
             new_tail.append([last_head[0],last_head[1]])
             # les autres morceaux de tail vont la place du morceau avant lui exeple : morceau 1 va a la place du morceau 0
@@ -122,17 +119,17 @@ class Snake:
                 new_tail.append(last_tail[i])
 
         self.setTail(new_tail)
-    
-    def futureUpdateHead(self, direction=RIGHT,speed=1):
+
+    def futureUpdateHead(self, direction=RIGHT, speed=1):
         last_head = self.getHead()
         if direction == LEFT:
-            last_head = [last_head[0]-speed,last_head[1]]
+            last_head = [last_head[0]-speed, last_head[1]]
         elif direction == RIGHT:
-            last_head = [last_head[0]+speed,last_head[1]]
+            last_head = [last_head[0]+speed, last_head[1]]
         elif direction == UP:
-            last_head = [last_head[0],last_head[1]-speed]
+            last_head = [last_head[0], last_head[1]-speed]
         elif direction == DOWN:
-            last_head = [last_head[0],last_head[1]+speed]
+            last_head = [last_head[0], last_head[1]+speed]
         return last_head
 
     def checkHeadInBody(self,direction=RIGHT):
