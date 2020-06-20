@@ -1,6 +1,7 @@
 import sys
 import pygame
 import snake_func
+import time
 pygame.init()
 
 RIGHT = 0
@@ -81,6 +82,10 @@ pygame.display.set_caption('Snake Game')
 
 directionOfMovement = UP
 
+#actualisation
+refreshInS = 0.500
+start = time.time()
+
 #Fermeture de l'app
 while 1:
     #in menu
@@ -97,7 +102,7 @@ while 1:
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_KP_ENTER: 
+                if event.key == pygame.K_KP_ENTER or event.key == pygame.K_RETURN: 
                     player_score = 0
                     color_matrix.clearMatrix()
                     snake.resetSnake(3, [5, 5])
@@ -124,17 +129,19 @@ while 1:
                 print('RIGHT')
                 directionOfMovement = RIGHT
         
- 
-    if snake_movement(directionOfMovement):
-        if apple.isAppleEated(snake.futureUpdateHead(), snake.size):
-            player_score = player_score + 1
-            movement_effect(directionOfMovement, True)
+    if time.time()-start >= refreshInS:
+        start = time.time()
+        print("TIME OUT")
+        if snake_movement(directionOfMovement):
+            if apple.isAppleEated(snake.futureUpdateHead(), snake.size):
+                player_score = player_score + 1
+                movement_effect(directionOfMovement, True)
+            else:
+                movement_effect(directionOfMovement, False)
         else:
-            movement_effect(directionOfMovement, False)
-    else:
-        in_restart_menu = True
+            in_restart_menu = True
 
-    #code d'affichage
+        #code d'affichage
     reset_screen_in_black()
     for x in range (1,color_matrix.getNumberOfLigne()-1):
         for y in range (1,color_matrix.getNumberOfColumns()-1):
@@ -148,5 +155,5 @@ while 1:
                 color_case(x-1,y-1,red)
             if color_matrix.getMatrix()[x][y]==3:
                 color_case(x-1,y-1,green)
+        
     
-    pygame.time.wait(500)
