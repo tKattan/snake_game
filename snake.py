@@ -137,13 +137,13 @@ while 1:
             if event.key == pygame.K_UP and not back_in_body(UP):
                 print('UP')
                 directionOfMovement = UP
-            elif event.key == pygame.K_DOWN and not back_in_body(DOWN):
+            if event.key == pygame.K_DOWN and not back_in_body(DOWN):
                 print('DOWN')
                 directionOfMovement = DOWN
-            elif event.key == pygame.K_LEFT and not back_in_body(LEFT):
+            if event.key == pygame.K_LEFT and not back_in_body(LEFT):
                 print('LEFT')
                 directionOfMovement = LEFT
-            elif event.key == pygame.K_RIGHT and not back_in_body(RIGHT):
+            if event.key == pygame.K_RIGHT and not back_in_body(RIGHT):
                 print('RIGHT')
                 directionOfMovement = RIGHT
         

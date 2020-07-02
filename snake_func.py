@@ -77,6 +77,7 @@ class Snake:
     #Initialisation de l'Objet snake, on insere sa taille au debut, la position de sa tete (position qui sera mettre dans une matrice donc ce n'est pas en pixel
     # mais en case)
     def __init__(self, size_init, posHead):
+        self.size = size_init
         self.resetSnake(size_init,posHead)
 
     def updateSnake(self, direction=RIGHT, appleEat=False): #Les constantes de direction sont définies en haut du fichier
@@ -86,7 +87,7 @@ class Snake:
         new_tail = []
         
         self.setHead(self.futureUpdateHead(direction))
-
+        print(self.size)
         if appleEat == False:
             #la premiere partie de Tail va a la pos de l'ancienne position de head,
             new_tail.append([last_head[0],last_head[1]])
@@ -99,8 +100,10 @@ class Snake:
             # les autres morceaux de tail restent au memes endroits
             for i in range(self.size):
                 new_tail.append(last_tail[i])
+            self.size = len(self.getTail())+1
 
         self.setTail(new_tail)
+        
 
     def futureUpdateHead(self, direction=RIGHT, speed=1):
         last_head = self.getHead()
