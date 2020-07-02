@@ -100,7 +100,7 @@ pygame.display.set_caption('Snake Game')
 directionOfMovement = UP
 
 #actualisation
-refreshInS = 0.300
+refreshInS = 0.100
 start = time.time()
 
 #Fermeture de l'app
@@ -151,8 +151,8 @@ while 1:
         start = time.time()
         if snake_movement(directionOfMovement):
             if apple.isAppleEated(snake.futureUpdateHead(directionOfMovement)):
-                player_score = player_score + 1
                 movement_effect(directionOfMovement, True)
+                player_score = snake.size-1 #-1 pour la tete
             else:
                 movement_effect(directionOfMovement, False)
         else:

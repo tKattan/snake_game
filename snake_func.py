@@ -162,9 +162,11 @@ class Apple:
             for y in range(1, self.color_matrix.getNumberOfLigne()):
                 if self.color_matrix.getByPosMatrix(x, y) == 0:
                     i = i + 1
-                if i == applepos:
+                if i == applepos and self.color_matrix.getByPosMatrix(x,y) != -1:
                     self.color_matrix.setByPosMatrix(x, y, 3)
                     self.pos = (x,y)
+                else:
+                    i = random.randrange(0,self.color_matrix.ligne * self.color_matrix.colonne)
 
 # la taille du serpent doit être actualisé après l'appel de cette fonction
 # elle génère directement une nouvelle pomme.
