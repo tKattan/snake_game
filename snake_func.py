@@ -77,6 +77,8 @@ class Snake:
     #Initialisation de l'Objet snake, on insere sa taille au debut, la position de sa tete (position qui sera mettre dans une matrice donc ce n'est pas en pixel
     # mais en case)
     def __init__(self, size_init, posHead):
+        self.posTail = []
+        self.posHead = posHead
         self.size = size_init
         self.resetSnake(size_init,posHead)
 
@@ -87,7 +89,6 @@ class Snake:
         new_tail = []
         
         self.setHead(self.futureUpdateHead(direction))
-        print(self.size)
         if appleEat == False:
             #la premiere partie de Tail va a la pos de l'ancienne position de head,
             new_tail.append([last_head[0],last_head[1]])
@@ -165,7 +166,6 @@ class Apple:
                 if i == applepos:
                     self.color_matrix.setByPosMatrix(x, y, 3)
                     self.pos = (x,y)
-                    print(self.pos)
                 
 
 # la taille du serpent doit être actualisé après l'appel de cette fonction

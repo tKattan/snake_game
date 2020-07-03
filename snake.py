@@ -76,10 +76,9 @@ def reset_screen_in_black():
     screen.fill(black)
     
 #Fonction qui met une case vide si elle n'appartient plus au serpent ou à la pomme
-def update_matrix(x,y):
-    """print(str(apple.getPos()) + " =? " + str([x,y]))"""
-    if not [x,y] in snake.getTail() and not [x,y] == snake.getHead() and apple.getPos() != (x, y):
-        color_matrix.setByTuplePosMatrix([x,y],0)
+def update_matrix(x_cord,y_cord):
+    if not [x_cord,y_cord] in snake.getTail() and not [x_cord,y_cord] == snake.getHead() and apple.getPos() != (x_cord, y_cord):
+        color_matrix.setByTuplePosMatrix([x_cord,y_cord],0)
     
 
 #Déf de fonction coloré une case
@@ -137,16 +136,12 @@ while 1:
             sys.exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP and not back_in_body(UP):
-                print('UP')
                 directionOfMovement = UP
             if event.key == pygame.K_DOWN and not back_in_body(DOWN):
-                print('DOWN')
                 directionOfMovement = DOWN
             if event.key == pygame.K_LEFT and not back_in_body(LEFT):
-                print('LEFT')
                 directionOfMovement = LEFT
             if event.key == pygame.K_RIGHT and not back_in_body(RIGHT):
-                print('RIGHT')
                 directionOfMovement = RIGHT
         
     if time.time()-start >= refreshInS:
