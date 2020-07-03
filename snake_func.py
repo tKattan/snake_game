@@ -49,14 +49,6 @@ class Matrix:
                 else:
                     self.matrix[i][j]=0
 
-    #def checkSnakeInBorder(self,snake,direction=RIGHT):
-        """
-        Faire une fonction a part dans le fichier main pour éviter les appels do'bjets dans d'autre objet
-        Surtout pour faire un check (il suffira alors juste de check la future tête et le mettre dans une vaiable 'head' et ses coordonnée et appeler
-        la matrix.getMatrix()[head[0]][head[1]])
-        
-        """
-
     def setMatrix(self,new_matrix):
         for i in range(self.ligne):
             for j in range(self.colonne):
@@ -64,6 +56,9 @@ class Matrix:
 
     def setByPosMatrix(self,x,y,valeur):
         self.matrix[y][x]= valeur
+
+    def setByTuplePosMatrix(self, pos ,valeur):
+        self.matrix[pos[0]][pos[1]]= valeur
 
     def getByPosMatrix(self,x,y):
         return self.matrix[y][x]
@@ -82,27 +77,19 @@ class Snake:
     #Initialisation de l'Objet snake, on insere sa taille au debut, la position de sa tete (position qui sera mettre dans une matrice donc ce n'est pas en pixel
     # mais en case)
     def __init__(self, size_init, posHead):
-        self.size = size_init
         self.posTail = []
         self.posHead = posHead
-        print(self.posHead[0])
-        for i in range(1,size_init+1):
-            if posHead[0]-i < 0:
-                print("Snake init failed, cause : not enough space for the tail\n(Snake init -> Tail is on the left of the head)")
-                sys.exit("System Exit")
-            else:
-                self.posTail.append([posHead[0]-i,posHead[1]])
+        self.size = size_init
+        self.resetSnake(size_init,posHead)
 
-
-    def updateSnake(self,direction=RIGHT,appleEat=False): #Les constantes de direction sont définies en haut du fichier
+    def updateSnake(self, direction=RIGHT, appleEat=False): #Les constantes de direction sont définies en haut du fichier
 
         last_head = self.getHead()
         last_tail = self.getTail()
         new_tail = []
         
         self.setHead(self.futureUpdateHead(direction))
-
-        if appleEat==False:
+        if appleEat == False:
             #la premiere partie de Tail va a la pos de l'ancienne position de head,
             new_tail.append([last_head[0],last_head[1]])
             # les autres morceaux de tail vont la place du morceau avant lui exeple : morceau 1 va a la place du morceau 0
@@ -114,19 +101,21 @@ class Snake:
             # les autres morceaux de tail restent au memes endroits
             for i in range(self.size):
                 new_tail.append(last_tail[i])
+            self.size = len(self.getTail())+1
 
         self.setTail(new_tail)
-    
-    def futureUpdateHead(self, direction=RIGHT,speed=1):
+        
+
+    def futureUpdateHead(self, direction=RIGHT, speed=1):
         last_head = self.getHead()
         if direction == LEFT:
-            last_head = [last_head[0]-speed,last_head[1]]
+            last_head = [last_head[0]-speed, last_head[1]]
         elif direction == RIGHT:
-            last_head = [last_head[0]+speed,last_head[1]]
+            last_head = [last_head[0]+speed, last_head[1]]
         elif direction == UP:
-            last_head = [last_head[0],last_head[1]-speed]
+            last_head = [last_head[0], last_head[1]-speed]
         elif direction == DOWN:
-            last_head = [last_head[0],last_head[1]+speed]
+            last_head = [last_head[0], last_head[1]+speed]
         return last_head
 
     def checkHeadInBody(self,direction=RIGHT):
@@ -134,6 +123,17 @@ class Snake:
         if head in self.posTail:
             return True
         return False
+
+    def resetSnake(self, size_init, posHead):
+        self.size = size_init
+        self.posTail = []
+        self.posHead = posHead
+        for i in range(1, size_init+1):
+            if posHead[0]-i < 0:
+                print("Snake init failed, cause : not enough space for the tail\n(Snake init -> Tail is on the left of the head)")
+                sys.exit("System Exit")
+            else:
+                self.posTail.append([posHead[0]-i, posHead[1]])
 
     def setHead(self,new_pos):
         self.posHead = new_pos
@@ -152,26 +152,32 @@ class Apple:
     # attention de respecter une taille minimum de taille exploitable de 1 (ce qui est logique aussi pour le serpent)
     def __init__(self, color_matrix):  
         self.color_matrix = color_matrix
-        
+        self.pos = None
 
     def setNewApple(self, snake_size):
         i = 0
 
         applepos = random.randint(0, self.color_matrix.getPlayableCells() - snake_size) #genere une pomme aléatoirement sur le terrain
 
-        for x in range(1, self.color_matrix.getNumberOfColumns()):
-            for y in range(1, self.color_matrix.getNumberOfLigne()):
+        for x in range(1, self.color_matrix.getNumberOfColumns()-1):
+            for y in range(1, self.color_matrix.getNumberOfLigne()-1):
                 if self.color_matrix.getByPosMatrix(x, y) == 0:
                     i = i + 1
                 if i == applepos:
                     self.color_matrix.setByPosMatrix(x, y, 3)
+                    self.pos = (x,y)
+                
 
 # la taille du serpent doit être actualisé après l'appel de cette fonction
 # elle génère directement une nouvelle pomme.
-    def isAppleEated(self, futureHeadPos, snake_size):
-        if self.color_matrix.getByPosMatrix(futureHeadPos[0], futureHeadPos[1]) == 3:
-            self.setNewApple(snake_size)
+    def isAppleEated(self, futureHeadPos):
+        if (futureHeadPos[0],futureHeadPos[1]) == self.pos:
             return True
         else:
             return False
 
+    def getPos(self):
+        if self.pos == None:
+            print("Apple getpos() error : the Apple isn't initialize")
+            sys.exit("System exit.")
+        return self.pos

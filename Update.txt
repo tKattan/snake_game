@@ -1,0 +1,17 @@
+US05 :
+
+-snake_movement done
+
+
+US07:
+
+-movement_effect done
+
+-Apple modification (getPos() added) -> finally useless cause of Apple auto-print itself
+
+-Matrix class modification (setByTuplePosMatrix((x,y),valeur) added) -> to help the function movement effect
+
+
+
+ 
+NOTE : Need use snake_movement to check the state of the game after an event and do something about that  
