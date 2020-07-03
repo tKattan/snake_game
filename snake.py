@@ -109,6 +109,8 @@ while 1:
     if in_restart_menu:
         screen.blit(press_enter, (300,400))
         screen.blit(score, (0,0))
+        if player_score != 0:
+            player_score-=3 #queue initiale = 3 
         score_len = len(str(player_score))
         for draw_score in range (1,score_len+1):
             last_number = player_score%10
@@ -152,7 +154,7 @@ while 1:
         if snake_movement(directionOfMovement):
             if apple.isAppleEated(snake.futureUpdateHead(directionOfMovement)):
                 movement_effect(directionOfMovement, True)
-                player_score = snake.size-1 #-1 pour la tete
+                player_score = snake.size
             else:
                 movement_effect(directionOfMovement, False)
         else:

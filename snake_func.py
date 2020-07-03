@@ -158,15 +158,15 @@ class Apple:
 
         applepos = random.randint(0, self.color_matrix.getPlayableCells() - snake_size) #genere une pomme aléatoirement sur le terrain
 
-        for x in range(1, self.color_matrix.getNumberOfColumns()):
-            for y in range(1, self.color_matrix.getNumberOfLigne()):
+        for x in range(1, self.color_matrix.getNumberOfColumns()-1):
+            for y in range(1, self.color_matrix.getNumberOfLigne()-1):
                 if self.color_matrix.getByPosMatrix(x, y) == 0:
                     i = i + 1
-                if i == applepos and self.color_matrix.getByPosMatrix(x,y) != -1:
+                if i == applepos:
                     self.color_matrix.setByPosMatrix(x, y, 3)
                     self.pos = (x,y)
-                else:
-                    i = random.randrange(0,self.color_matrix.ligne * self.color_matrix.colonne)
+                    print(self.pos)
+                
 
 # la taille du serpent doit être actualisé après l'appel de cette fonction
 # elle génère directement une nouvelle pomme.
